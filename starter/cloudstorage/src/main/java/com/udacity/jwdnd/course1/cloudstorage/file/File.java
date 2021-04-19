@@ -1,4 +1,4 @@
-package com.udacity.jwdnd.course1.cloudstorage.file.models;
+package com.udacity.jwdnd.course1.cloudstorage.file;
 
 public class File {
     private int fileId;

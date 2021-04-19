@@ -1,11 +1,10 @@
 package com.udacity.jwdnd.course1.cloudstorage.file;
 
-import com.udacity.jwdnd.course1.cloudstorage.file.models.File;
-import com.udacity.jwdnd.course1.cloudstorage.user.User;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.List;
 
 @Service
 public class FileService {
@@ -16,10 +15,12 @@ public class FileService {
     }
 
     public int saveFile(MultipartFile file, Integer userId) throws IOException {
-        return fileMapper.saveFile(new File(file.getOriginalFilename(),file.getSize(),file.getBytes(),file.getContentType(),userId));
+
+
+        return fileMapper.saveFile(new File(file.getName(),file.getSize(),file.getBytes(),file.getContentType(),userId));
     }
 
-    public File[] getFileList(Integer userId) {
+    public List<File> getFileList(Integer userId) {
         return fileMapper.getFileList(userId);
     }
 

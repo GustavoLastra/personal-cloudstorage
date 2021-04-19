@@ -1,7 +1,6 @@
 package com.udacity.jwdnd.course1.cloudstorage.home;
 
 import com.udacity.jwdnd.course1.cloudstorage.file.FileService;
-import com.udacity.jwdnd.course1.cloudstorage.file.models.File;
 import com.udacity.jwdnd.course1.cloudstorage.user.User;
 import com.udacity.jwdnd.course1.cloudstorage.user.UserService;
 import org.slf4j.Logger;
@@ -11,7 +10,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -46,6 +44,6 @@ class HomeController {
             Integer fileId = this.fileService.saveFile(file, user.getUserId());
         }
 
-        return "home";
+        return "redirect:home";
     }
 }
