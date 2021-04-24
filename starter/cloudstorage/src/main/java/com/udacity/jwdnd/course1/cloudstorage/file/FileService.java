@@ -17,7 +17,7 @@ public class FileService {
     public int saveFile(MultipartFile file, Integer userId) throws IOException {
 
 
-        return fileMapper.saveFile(new File(file.getName(),file.getSize(),file.getBytes(),file.getContentType(),userId));
+        return fileMapper.saveFile(new File(0,file.getOriginalFilename(), file.getContentType(),file.getSize(),userId,file.getBytes()));
     }
 
     public List<File> getFileList(Integer userId) {
