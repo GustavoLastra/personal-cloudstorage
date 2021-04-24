@@ -17,11 +17,14 @@ public class FileService {
     public int saveFile(MultipartFile file, Integer userId) throws IOException {
 
 
-        return fileMapper.saveFile(new File(0,file.getOriginalFilename(), file.getContentType(),file.getSize(),userId,file.getBytes()));
+        return fileMapper.saveFile(new File(0,file.getOriginalFilename(), file.getContentType(), file.getSize(), userId,file.getBytes()));
     }
 
     public List<File> getFileList(Integer userId) {
         return fileMapper.getFileList(userId);
     }
 
+    public File getFile(Integer fileId) {
+        return fileMapper.getFile(fileId);
+    }
 }

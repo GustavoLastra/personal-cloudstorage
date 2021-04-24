@@ -11,4 +11,10 @@ public interface FileMapper {
     @Insert("INSERT INTO FILES (fileName, fileSize, fileData ,contentType, userId) VALUES (#{fileName}, #{fileSize}, #{fileData}, #{contentType}, #{userId})")
     @Options(useGeneratedKeys = true, keyProperty = "fileId")
     int saveFile(File file);
+
+    @Delete("DELETE FROM files WHERE fileid = #{fileId}")
+    Integer delete(int fileId);
+
+    @Select("SELECT * FROM FILES WHERE fileId = #{fileId}")
+    File getFile(Integer fileId);
 }
