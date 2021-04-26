@@ -14,10 +14,8 @@ public class FileService {
         this.fileMapper = fileMapper;
     }
 
-    public int saveFile(MultipartFile file, Integer userId) throws IOException {
-
-
-        return fileMapper.saveFile(new File(0,file.getOriginalFilename(), file.getContentType(), file.getSize(), userId,file.getBytes()));
+    public Integer saveFile(MultipartFile file, Integer userId) throws IOException {
+        return fileMapper.saveFile(new File(file.getOriginalFilename(), file.getContentType(), file.getSize(), userId,file.getBytes()));
     }
 
     public List<File> getFileList(Integer userId) {
@@ -26,5 +24,9 @@ public class FileService {
 
     public File getFile(Integer fileId) {
         return fileMapper.getFile(fileId);
+    }
+
+    public boolean deleteFile(Integer fileId) {
+        return fileMapper.deleteFile(fileId);
     }
 }

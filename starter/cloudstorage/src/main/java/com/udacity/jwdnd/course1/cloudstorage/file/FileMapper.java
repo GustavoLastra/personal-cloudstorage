@@ -13,7 +13,7 @@ public interface FileMapper {
     int saveFile(File file);
 
     @Delete("DELETE FROM files WHERE fileid = #{fileId}")
-    Integer delete(int fileId);
+    boolean deleteFile(int fileId);
 
     @Select("SELECT * FROM FILES WHERE fileId = #{fileId}")
     File getFile(Integer fileId);
