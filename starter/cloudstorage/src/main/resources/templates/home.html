@@ -124,14 +124,16 @@
 
                             let credentialList = /*[[${credentialList}]]*/ 'default';
                             let fileList = /*[[${fileList}]]*/ 'default';
-                            console.log('message: ', JSON.stringify(credentialList));
+                            let noteList = /*[[${noteList}]]*/ 'default';
+                            console.log('message credentialList: ', JSON.stringify(credentialList));
+                            console.log('message noteList: ', JSON.stringify(noteList));
                             console.log('message: ', JSON.stringify(fileList));
 
                             /*]]>*/
                         </script>
 
                         <div class="table-responsive">
-                            <table th:if="credentialList" class="table table-striped" id="credentialTable">
+                            <table th:if="${credentialList}" class="table table-striped" id="credentialTable">
                                 <thead>
                                     <tr>
                                         <th style="width: 20%" scope="col"></th>

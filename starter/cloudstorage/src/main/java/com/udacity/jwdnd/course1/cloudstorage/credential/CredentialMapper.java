@@ -10,7 +10,7 @@ import java.util.List;
 
 @Mapper
 public interface CredentialMapper {
-    @Select("SELECT * FROM FILES WHERE userId = #{userId}")
+    @Select("SELECT * FROM CREDENTIALS WHERE userId = #{userId}")
     List<Credential> getCredentialList(Integer userId);
 
     @Insert("INSERT INTO CREDENTIALS (url, userName, key ,password, userId) VALUES (#{url}, #{userName}, #{key}, #{password}, #{userId})")
