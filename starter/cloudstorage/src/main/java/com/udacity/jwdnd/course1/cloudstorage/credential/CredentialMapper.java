@@ -1,11 +1,7 @@
 package com.udacity.jwdnd.course1.cloudstorage.credential;
 
-import com.udacity.jwdnd.course1.cloudstorage.file.File;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Options;
-import org.apache.ibatis.annotations.Select;
-
+import com.udacity.jwdnd.course1.cloudstorage.note.Note;
+import org.apache.ibatis.annotations.*;
 import java.util.List;
 
 @Mapper
@@ -16,4 +12,13 @@ public interface CredentialMapper {
     @Insert("INSERT INTO CREDENTIALS (url, userName, key ,password, userId) VALUES (#{url}, #{userName}, #{key}, #{password}, #{userId})")
     @Options(useGeneratedKeys = true, keyProperty = "credentialId")
     Integer saveCredential(Credential credential);
+
+    @Select("SELECT * FROM CREDENTIALS WHERE userId = #{userId} AND credentialId = #{credentialId}")
+    Credential getCredential(Credential credential);
+
+    @Delete("DELETE FROM CREDENTIALS WHERE userId = #{userId} AND credentialId = #{credentialId}")
+    Integer deleteCredential(Credential credential);
+
+    @Update("UPDATE CREDENTIALS SET url = #{url}, userName = #{userName}, password = #{password} WHERE userId = #{userId} AND noteId = #{credentialId}")
+    Integer updateCredential(Credential credential);
 }

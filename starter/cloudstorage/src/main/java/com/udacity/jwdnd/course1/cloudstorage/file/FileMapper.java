@@ -12,7 +12,7 @@ public interface FileMapper {
     @Options(useGeneratedKeys = true, keyProperty = "fileId")
     int saveFile(File file);
 
-    @Delete("DELETE FROM files WHERE fileid = #{fileId}")
+    @Delete("DELETE FROM files WHERE fileId = #{fileId}")
     boolean deleteFile(int fileId);
 
     @Select("SELECT * FROM FILES WHERE fileId = #{fileId}")

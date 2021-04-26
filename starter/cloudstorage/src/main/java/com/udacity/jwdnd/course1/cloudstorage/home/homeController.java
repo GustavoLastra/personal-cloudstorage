@@ -1,5 +1,6 @@
 package com.udacity.jwdnd.course1.cloudstorage.home;
 
+import com.udacity.jwdnd.course1.cloudstorage.credential.Credential;
 import com.udacity.jwdnd.course1.cloudstorage.credential.CredentialForm;
 import com.udacity.jwdnd.course1.cloudstorage.credential.CredentialService;
 import com.udacity.jwdnd.course1.cloudstorage.file.File;
@@ -54,13 +55,19 @@ class HomeController {
     }
 
     @GetMapping("/file/download/{fileId}")
-    public ResponseEntity downloadFile(@PathVariable("fileId") Integer fileId, Authentication auth,
-                                       Model model) throws IOException {
-        File file = this.fileService.getFile(fileId);
-        return ResponseEntity.ok()
-                .contentType(MediaType.parseMediaType(file.getContentType()))
-                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + file.getFileName() + "\"")
-                .body(file.getFileData());
+    public ResponseEntity  downloadFile(@PathVariable("fileId") Integer fileId, Authentication authentication) throws IOException {
+        String username = authentication.getName();
+        User user = userService.getUser(username);
+
+        if (user != null) {
+            File file = this.fileService.getFile(fileId);
+            return ResponseEntity.ok()
+                    .contentType(MediaType.parseMediaType(file.getContentType()))
+                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + file.getFileName() + "\"")
+                    .body(file.getFileData());
+        }
+
+        return ResponseEntity.badRequest().body("Authentication failure");
     }
 
     @GetMapping("/file/delete/{fileId}")
@@ -84,23 +91,54 @@ class HomeController {
         return "redirect:/home";
     }
 
+    @GetMapping("/note/delete/{noteId}")
+    public String deleteNote(@RequestBody Note note, Authentication authentication,
+                             Model model) throws IOException {
+        String username = authentication.getName();
+        User user = userService.getUser(username);
+
+        if (user != null) {
+            note.setUserId(user.getUserId());
+            Integer noteId = this.noteService.deleteNote(note);
+        }
+        return "redirect:/home";
+    }
+
+
     @PostMapping("/note")
     public String uploadNote(@ModelAttribute("newCredential") NoteForm noteForm, Authentication authentication) throws IOException {
         String username = authentication.getName();
         User user = userService.getUser(username);
         if (user != null) {
-            Integer noteId = this.noteService.saveNote( noteForm, user.getUserId());
+            Note note = new Note(noteForm.getNoteId(), noteForm.getNoteTitle(), noteForm.getNoteDescription(), user.getUserId());
+            Integer noteId = this.noteService.saveNote(note);
         }
 
         return "redirect:/home";
     }
 
-    @PostMapping("/credential")
-    public String uploadFile(@ModelAttribute("newCredential") CredentialForm credentialForm, Authentication authentication) throws IOException {
+    @GetMapping("/credential/delete/{credentialId}")
+    public String deleteCredential(@RequestBody Credential credential, Authentication authentication,
+                                   Model model) throws IOException {
         String username = authentication.getName();
         User user = userService.getUser(username);
+
         if (user != null) {
-            Integer credentialId = this.credentialService.saveCredential( credentialForm, user.getUserId());
+            credential.setUserId(user.getUserId());
+            Integer credentialId = this.credentialService.deleteCredential(credential);
+        }
+        return "redirect:/home";
+    }
+
+
+    @PostMapping("/credential")
+    public String uploadCredential(@ModelAttribute("newCredential") Credential credential, Authentication authentication) throws IOException {
+        String username = authentication.getName();
+        User user = userService.getUser(username);
+
+        if (user != null) {
+            credential.setUserId(user.getUserId());
+            Integer credentialId = this.credentialService.saveCredential(credential);
         }
 
         return "redirect:/home";

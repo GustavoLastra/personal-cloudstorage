@@ -3,8 +3,6 @@ package com.udacity.jwdnd.course1.cloudstorage.credential;
 import com.udacity.jwdnd.course1.cloudstorage.auth.HashService;
 import org.springframework.stereotype.Service;
 import java.io.IOException;
-import java.security.SecureRandom;
-import java.util.Base64;
 import java.util.List;
 
 @Service
@@ -17,19 +15,30 @@ public class CredentialService {
         this.hashService = hashService;
     }
 
-    public Integer saveCredential(CredentialForm credentialForm, Integer userId) throws IOException {
+    public Integer saveCredential(Credential credential) throws IOException {
+        String encodedSalt = hashService.getEncodedSalt();
+        credential.setKey(encodedSalt);
+        credential.setPassword(hashService.getHashedValue(credential.getPassword(), encodedSalt));
 
-        byte[] salt = new byte[16];
-        SecureRandom random = new SecureRandom();
-        random.nextBytes(salt);
-        String encodedSalt = Base64.getEncoder().encodeToString(salt);
-        String hashedPassword = hashService.getHashedValue(credentialForm.getPassword(), encodedSalt);
+        if (credential.getCredentialId() != null && credentialMapper.getCredential(credential) != null) {
+            return credentialMapper.updateCredential(credential);
+        }
 
-        return credentialMapper.saveCredential(new Credential(credentialForm.getUrl(),credentialForm.getUsername(),encodedSalt,hashedPassword, userId));
+        return credentialMapper.saveCredential(credential);
     }
 
     public List<Credential> getCredentialList(Integer userId) {
         return credentialMapper.getCredentialList(userId);
     }
 
+    public Integer deleteCredential(Credential credential) {
+        return credentialMapper.deleteCredential(credential);
+    }
+
+    public Integer updateCredential(Credential credential, Integer userId) {
+        String encodedSalt = hashService.getEncodedSalt();
+        credential.setKey(encodedSalt);
+        credential.setPassword(hashService.getHashedValue(credential.getPassword(), encodedSalt));
+        return  credentialMapper.updateCredential(credential);
+    }
 }
