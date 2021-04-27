@@ -94,17 +94,6 @@ class HomeController {
         return "redirect:/home";
     }
 
-    @PostMapping("/note")
-    public String uploadNote(@ModelAttribute("noteForm") NoteForm noteForm, Authentication authentication) throws IOException {
-        String username = authentication.getName();
-        User user = userService.getUser(username);
-        if (user != null) {
-            Integer noteId = this.noteService.saveNote(noteForm, user.getUserId());
-        }
-
-        return "redirect:/home";
-    }
-
     @GetMapping("/note/delete/{noteId}")
     public String deleteNote(@PathVariable("noteId") Integer noteId, Authentication authentication,
                              Model model) throws IOException {
@@ -125,6 +114,18 @@ class HomeController {
         if (user != null) {
             credential.setUserId(user.getUserId());
             Integer credentialId = this.credentialService.saveCredential(credential);
+        }
+
+        return "redirect:/home";
+    }
+
+    @PostMapping("/note")
+    public String uploadNote(@ModelAttribute("note") Note note, Authentication authentication) throws IOException {
+        String username = authentication.getName();
+        User user = userService.getUser(username);
+        if (user != null) {
+            note.setUserId(user.getUserId());
+            Integer noteId = this.noteService.saveNote(note);
         }
 
         return "redirect:/home";
