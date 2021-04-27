@@ -31,8 +31,8 @@ public class CredentialService {
         return credentialMapper.getCredentialList(userId);
     }
 
-    public Integer deleteCredential(Credential credential) {
-        return credentialMapper.deleteCredential(credential);
+    public Integer deleteCredential(Integer credentialId, Integer userId) {
+        return credentialMapper.deleteCredential(credentialId, userId);
     }
 
     public Integer updateCredential(Credential credential, Integer userId) {

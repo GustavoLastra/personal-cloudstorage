@@ -12,7 +12,9 @@ public class NoteService {
         this.noteMapper = noteMapper;
     }
 
-    public Integer saveNote(Note note) {
+    public Integer saveNote(NoteForm noteForm,Integer userId) {
+        Note note = new Note(noteForm.getNoteId(), noteForm.getNoteTitle(), noteForm.getNoteDescription(), userId);
+
         if (note.getNoteId() != null && noteMapper.getNote(note) != null) {
             return noteMapper.updateNote(note);
         }
@@ -23,8 +25,8 @@ public class NoteService {
         return noteMapper.getNoteList(userId);
     }
 
-    public Integer deleteNote(Note note) {
-        return  noteMapper.deleteNote(note);
+    public Integer deleteNote(Integer noteId, Integer userId) {
+        return  noteMapper.deleteNote(noteId, userId);
     }
 
 }
