@@ -2,6 +2,7 @@ package com.udacity.jwdnd.course1.cloudstorage.credential;
 
 import com.udacity.jwdnd.course1.cloudstorage.note.Note;
 import org.apache.ibatis.annotations.*;
+
 import java.util.List;
 
 @Mapper
@@ -18,7 +19,7 @@ public interface CredentialMapper {
 
     @Delete("DELETE FROM CREDENTIALS WHERE userId = #{userId} AND credentialId = #{credentialId}")
     Integer deleteCredential(Integer credentialId, Integer userId);
-
+    
     @Update("UPDATE CREDENTIALS SET url = #{url}, userName = #{userName}, password = #{password} WHERE userId = #{userId} AND credentialId = #{credentialId}")
     Integer updateCredential(Credential credential);
 }

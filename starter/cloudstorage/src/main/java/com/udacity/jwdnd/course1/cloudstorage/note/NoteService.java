@@ -19,6 +19,8 @@ public class NoteService {
         return noteMapper.saveNote(note);
     }
 
+
+
     public List<Note> getNoteList(Integer userId) {
         return noteMapper.getNoteList(userId);
     }
