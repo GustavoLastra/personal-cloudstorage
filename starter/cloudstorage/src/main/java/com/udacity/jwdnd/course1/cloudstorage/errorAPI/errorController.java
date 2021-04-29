@@ -1,4 +1,4 @@
-package com.udacity.jwdnd.course1.cloudstorage.error;
+package com.udacity.jwdnd.course1.cloudstorage.errorAPI;
 
 import org.springframework.boot.web.servlet.error.ErrorController;
 import org.springframework.stereotype.Controller;
