@@ -150,7 +150,7 @@ class HomeController {
         if (IsSuccessful) {
             redirectAttrs.addFlashAttribute("message", successfulmessage);
         } else {
-            redirectAttrs.addFlashAttribute("message", "Error");
+            redirectAttrs.addFlashAttribute("message", "There was an error!");
         }
         redirectAttrs.addFlashAttribute("activatedTab", activatedTab);
     }
