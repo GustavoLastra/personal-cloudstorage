@@ -1,4 +1,4 @@
-package com.udacity.jwdnd.course1.cloudstorage.homeAPI;
+package com.udacity.jwdnd.course1.cloudstorage.home;
 
 import com.udacity.jwdnd.course1.cloudstorage.auth.EncryptionService;
 import com.udacity.jwdnd.course1.cloudstorage.credential.Credential;

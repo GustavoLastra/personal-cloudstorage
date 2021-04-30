@@ -61,7 +61,7 @@ The back-end is all about security and connecting the front-end to database data
   means using Spring MVC's application model to identify the templates served for different requests and populating the
   view model with data needed by the template.
 - The controllers you write should also be responsible for determining what, if any,
-  com.udacity.jwdnd.course1.cloudstorage.errorAPI messages the application displays to the user. When a controller
+  com.udacity.jwdnd.course1.cloudstorage.error messages the application displays to the user. When a controller
   processes front-end requests, it should delegate the individual steps and logic of those requests to other services in
   the application, but it should interpret the results to ensure a smooth user experience.
 - It's a good idea to keep your controllers in a single package to isolate the controller layer. Usually, we simply call
@@ -87,9 +87,9 @@ The back-end is all about security and connecting the front-end to database data
 ### The Front-End
 
 Your tech lead has done a thorough job developing HTML templates for the required application pages. They have included
-fields, modal forms, success and com.udacity.jwdnd.course1.cloudstorage.errorAPI message elements, as well as styling
-and functional components using Bootstrap as a framework. You must edit these templates and insert Thymeleaf attributes
-to supply the back-end data and functionality described by the following individual page requirements:
+fields, modal forms, success and com.udacity.jwdnd.course1.cloudstorage.error message elements, as well as styling and
+functional components using Bootstrap as a framework. You must edit these templates and insert Thymeleaf attributes to
+supply the back-end data and functionality described by the following individual page requirements:
 
 1. Login page
 

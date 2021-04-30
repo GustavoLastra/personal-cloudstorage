@@ -1,7 +1,7 @@
 package com.udacity.jwdnd.course1.cloudstorage.auth;
 
-import com.udacity.jwdnd.course1.cloudstorage.user.UserMapper;
 import com.udacity.jwdnd.course1.cloudstorage.user.User;
+import com.udacity.jwdnd.course1.cloudstorage.user.UserMapper;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;

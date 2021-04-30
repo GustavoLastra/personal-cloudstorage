@@ -27,7 +27,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         //h2-console Matcher not for production
         http.authorizeRequests()
-                .antMatchers("/signup", "/css/**", "/js/**","/h2-console/**").permitAll()
+                .antMatchers("/signup", "/css/**", "/js/**", "/h2-console/**").permitAll()
                 .anyRequest().authenticated();
 
         http.csrf().disable();

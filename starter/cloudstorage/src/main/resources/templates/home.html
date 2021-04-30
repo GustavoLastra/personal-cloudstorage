@@ -253,7 +253,7 @@
                                 <button class="btn btn-success"
                                         onclick="showCredentialModal(this.getAttribute('data-credentialId'),this.getAttribute('data-url'),this.getAttribute('data-username'),this.getAttribute('data-password'))"
                                         th:data-credentialId="*{credential.credentialId}"
-                                        th:data-password="${encryptionService.decryptValue(credential.password, credential.key)}"
+                                        th:data-password="${credential.password}"
                                         th:data-url="*{credential.url}"
                                         th:data-username="*{credential.userName}"
                                         type="button">Edit
