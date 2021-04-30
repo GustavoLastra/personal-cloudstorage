@@ -1,5 +1,6 @@
 package com.udacity.jwdnd.course1.cloudstorage.homeAPI;
 
+import com.udacity.jwdnd.course1.cloudstorage.auth.EncryptionService;
 import com.udacity.jwdnd.course1.cloudstorage.credential.Credential;
 import com.udacity.jwdnd.course1.cloudstorage.credential.CredentialService;
 import com.udacity.jwdnd.course1.cloudstorage.file.File;
@@ -38,7 +39,7 @@ class HomeController {
     }
 
     @GetMapping("/home")
-    public String homeView(Authentication authentication, Model model) {
+    public String homeView(Authentication authentication, Model model, EncryptionService encryptionService) {
         String username = authentication.getName();
         User user = userService.getUser(username);
         if (user != null) {
@@ -46,6 +47,7 @@ class HomeController {
                 model.addAttribute("fileList", this.fileService.getFileList(user.getUserId()));
                 model.addAttribute("credentialList", this.credentialService.getCredentialList(user.getUserId()));
                 model.addAttribute("noteList", this.noteService.getNoteList(user.getUserId()));
+                model.addAttribute("encryptionService", encryptionService);
             } catch (Exception error) {
                 this.logger.error(error.getMessage());
             }
