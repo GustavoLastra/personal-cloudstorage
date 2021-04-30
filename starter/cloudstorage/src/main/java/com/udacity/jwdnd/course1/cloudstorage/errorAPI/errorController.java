@@ -11,7 +11,6 @@ public class errorController {
 
         @RequestMapping("/error")
         public String handleError() {
-            //do something like logging
             return "error";
         }
 

@@ -18,6 +18,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
 
@@ -34,8 +35,6 @@ class HomeController {
         this.credentialService = credentialService;
         this.noteService = noteService;
         this.userService = userService;
-
-
     }
 
     @GetMapping("/home")
@@ -71,25 +70,24 @@ class HomeController {
     }
 
     @GetMapping("/file/delete/{fileId}")
-    public String deleteFile(@PathVariable("fileId") Integer fileId, Model model, Authentication authentication) {
+    public String deleteFile(@PathVariable("fileId") Integer fileId, Model model, Authentication authentication, RedirectAttributes redirectAttrs) {
         String username = authentication.getName();
         User user = userService.getUser(username);
         if (user != null) {
-            if (this.fileService.deleteFile(fileId)) {
-                model.addAttribute("actionSuccess", true);
-            } else {
-                model.addAttribute("actionFail", true);
-            }
+            boolean IsSuccessful = this.fileService.deleteFile(fileId);
+            addFlashAttributes(redirectAttrs, IsSuccessful, "File deleted", "files");
+
         }
         return "redirect:/home";
     }
 
     @PostMapping("/file")
-    public String uploadFile(@RequestParam("file") MultipartFile file, Authentication authentication) throws IOException {
+    public String uploadFile(@RequestParam("file") MultipartFile file, Authentication authentication, RedirectAttributes redirectAttrs) throws IOException {
         String username = authentication.getName();
         User user = userService.getUser(username);
         if (user != null) {
-            Integer fileId = this.fileService.saveFile(file, user.getUserId());
+            boolean IsSuccessful = this.fileService.saveFile(file, user.getUserId());
+            addFlashAttributes(redirectAttrs, IsSuccessful, "File uploaded", "files");
         }
 
         return "redirect:/home";
@@ -97,36 +95,39 @@ class HomeController {
 
     @GetMapping("/note/delete/{noteId}")
     public String deleteNote(@PathVariable("noteId") Integer noteId, Authentication authentication,
-                             Model model) throws IOException {
+                             RedirectAttributes redirectAttrs) throws IOException {
         String username = authentication.getName();
         User user = userService.getUser(username);
 
         if (user != null) {
-            this.noteService.deleteNote(noteId, user.getUserId());
+            boolean IsSuccessful = this.noteService.deleteNote(noteId, user.getUserId());
+            addFlashAttributes(redirectAttrs, IsSuccessful, "Note deleted", "notes");
         }
         return "redirect:/home";
     }
 
     @PostMapping("/credential")
-    public String uploadCredential(@ModelAttribute("credential") Credential credential, Authentication authentication) throws IOException {
+    public String uploadCredential(@ModelAttribute("credential") Credential credential, Authentication authentication, RedirectAttributes redirectAttrs) throws IOException {
         String username = authentication.getName();
         User user = userService.getUser(username);
 
         if (user != null) {
             credential.setUserId(user.getUserId());
-            Integer credentialId = this.credentialService.saveCredential(credential);
+            boolean IsSuccessful = this.credentialService.saveCredential(credential);
+            addFlashAttributes(redirectAttrs, IsSuccessful, "Credentials updated", "credentials");
         }
 
         return "redirect:/home";
     }
 
     @PostMapping("/note")
-    public String uploadNote(@ModelAttribute("note") Note note, Authentication authentication) throws IOException {
+    public String uploadNote(@ModelAttribute("note") Note note, Authentication authentication, RedirectAttributes redirectAttrs) throws IOException {
         String username = authentication.getName();
         User user = userService.getUser(username);
         if (user != null) {
             note.setUserId(user.getUserId());
-            Integer noteId = this.noteService.saveNote(note);
+            boolean IsSuccessful = this.noteService.saveNote(note);
+            addFlashAttributes(redirectAttrs, IsSuccessful, "Notes updated", "notes");
         }
 
         return "redirect:/home";
@@ -134,13 +135,23 @@ class HomeController {
 
     @GetMapping("/credential/delete/{credentialId}")
     public String deleteCredential(@PathVariable("credentialId") Integer credentialId, Authentication authentication,
-                                   Model model) throws IOException {
+                                   Model model, RedirectAttributes redirectAttrs) throws IOException {
         String username = authentication.getName();
         User user = userService.getUser(username);
 
         if (user != null) {
-            this.credentialService.deleteCredential(credentialId, user.getUserId());
+            boolean IsSuccessful = this.credentialService.deleteCredential(credentialId, user.getUserId());
+            addFlashAttributes(redirectAttrs, IsSuccessful, "Credential deleted", "credentials");
         }
         return "redirect:/home";
+    }
+
+    private void addFlashAttributes(RedirectAttributes redirectAttrs, boolean IsSuccessful, String successfulmessage, String activatedTab) {
+        if (IsSuccessful) {
+            redirectAttrs.addFlashAttribute("message", successfulmessage);
+        } else {
+            redirectAttrs.addFlashAttribute("message", "Error");
+        }
+        redirectAttrs.addFlashAttribute("activatedTab", activatedTab);
     }
 }
