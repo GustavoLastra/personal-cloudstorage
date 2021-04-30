@@ -10,13 +10,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-class AutheE2ETests {
+class AuthE2ETests {
 
-    WebElement fistNameField;
-    WebElement lastNameField;
-    WebElement usernameField;
-    WebElement passwordField;
-    WebElement signupButton;
     @LocalServerPort
     private int port;
     private WebDriver driver;
@@ -44,7 +39,7 @@ class AutheE2ETests {
 
     @Test
     public void shouldSignupUser() throws InterruptedException {
-        this.createUser();
+        this.createUser("testUser123");
         Thread.sleep(3000);
         Assertions.assertEquals("Login", driver.getTitle());
         WebElement alertField = driver.findElement(By.id("alertSuccess"));
@@ -53,27 +48,27 @@ class AutheE2ETests {
 
     @Test
     public void shouldNotSignupUser() throws InterruptedException {
-        this.createUser();
+        this.createUser("glastra");
         Thread.sleep(3000);
         this.goToSignupPage();
         Thread.sleep(3000);
-        this.createUser();
+        this.createUser("glastra");
         Assertions.assertEquals("Sign Up", driver.getTitle());
         WebElement alertField = driver.findElement(By.id("alertError"));
         Assertions.assertEquals("The username already exists.", alertField.getText());
     }
 
-    public void createUser() {
-        this.fistNameField = driver.findElement(By.id("inputFirstName"));
-        this.lastNameField = driver.findElement(By.id("inputLastName"));
-        this.usernameField = driver.findElement(By.id("inputUsername"));
-        this.passwordField = driver.findElement(By.id("inputPassword"));
-        this.signupButton = driver.findElement(By.tagName("button"));
-        this.fistNameField.sendKeys("Gustavo");
-        this.lastNameField.sendKeys("Lastra");
-        this.usernameField.sendKeys("glastra");
-        this.passwordField.sendKeys("Test123$");
-        this.signupButton.click();
+    public void createUser(String userName) {
+        WebElement fistNameField = driver.findElement(By.id("inputFirstName"));
+        WebElement lastNameField = driver.findElement(By.id("inputLastName"));
+        WebElement usernameField = driver.findElement(By.id("inputUsername"));
+        WebElement passwordField = driver.findElement(By.id("inputPassword"));
+        WebElement signupButton = driver.findElement(By.tagName("button"));
+        fistNameField.sendKeys("Gustavo");
+        lastNameField.sendKeys("Lastra");
+        usernameField.sendKeys(userName);
+        passwordField.sendKeys("Test123$");
+        signupButton.click();
     }
 
     public void goToSignupPage() {
