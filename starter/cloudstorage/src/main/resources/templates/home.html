@@ -17,7 +17,7 @@
 <body class="p-3 mb-2 bg-light text-black">
 <div class="container">
     <div class="form-group">
-        <label><a th:href="@{/logout}">Logout</a></label>
+        <label><a id="logout" th:href="@{/logout}">Logout</a></label>
     </div>
     <div class="alert alert-dark" th:if="${message}">
         <span th:text="${message}"></span>
@@ -251,11 +251,7 @@
                         <tr th:each="credential:${credentialList}">
                             <td>
                                 <button class="btn btn-success"
-                                        onclick="showCredentialModal(this.getAttribute('data-credentialId'),this.getAttribute('data-url'),this.getAttribute('data-username'),this.getAttribute('data-password'))"
-                                        th:data-credentialId="*{credential.credentialId}"
-                                        th:data-password="${credential.password}"
-                                        th:data-url="*{credential.url}"
-                                        th:data-username="*{credential.userName}"
+                                        th:onclick="javascript: showCredentialModal([[${credential.credentialId}]], [[${credential.url}]], [[${credential.userName}]], [[${encryptionService.decryptValue(credential.password, credential.key)}]])"
                                         type="button">Edit
                                 </button>
                                 <a class="btn btn-danger"

@@ -25,9 +25,6 @@ class AuthE2ETests {
     public void beforeEach() throws InterruptedException {
         this.driver = new ChromeDriver();
         driver.get("http://localhost:" + this.port + "/login");
-        WebElement signupButton = driver.findElement(By.id("signup-link"));
-        signupButton.click();
-        Thread.sleep(2000);
     }
 
     @AfterEach
@@ -38,8 +35,17 @@ class AuthE2ETests {
     }
 
     @Test
+    public void shouldRedirectToLogin() throws InterruptedException {
+        driver.get("http://localhost:" + this.port + "/home");
+        Thread.sleep(3000);
+        Assertions.assertEquals("Login", driver.getTitle());
+    }
+
+    @Test
     public void shouldSignupUser() throws InterruptedException {
-        this.createUser("testUser123");
+        this.goToSignupPage();
+        Thread.sleep(3000);
+        this.createUser("testUser123", "Test123$");
         Thread.sleep(3000);
         Assertions.assertEquals("Login", driver.getTitle());
         WebElement alertField = driver.findElement(By.id("alertSuccess"));
@@ -48,17 +54,36 @@ class AuthE2ETests {
 
     @Test
     public void shouldNotSignupUser() throws InterruptedException {
-        this.createUser("glastra");
+        this.goToSignupPage();
+        Thread.sleep(3000);
+        this.createUser("lastra", "Test123$");
         Thread.sleep(3000);
         this.goToSignupPage();
         Thread.sleep(3000);
-        this.createUser("glastra");
+        this.createUser("lastra", "Test123$");
         Assertions.assertEquals("Sign Up", driver.getTitle());
         WebElement alertField = driver.findElement(By.id("alertError"));
         Assertions.assertEquals("The username already exists.", alertField.getText());
     }
 
-    public void createUser(String userName) {
+    @Test
+    public void shouldRedirectToLoginAfterLogout() throws InterruptedException {
+        this.goToSignupPage();
+        Thread.sleep(3000);
+        this.createUser("kaku", "Test123$");
+        Thread.sleep(3000);
+        this.login("kaku", "Test123$");
+        Thread.sleep(3000);
+        Assertions.assertEquals("Home", driver.getTitle());
+        driver.get("http://localhost:" + this.port + "/home");
+        Thread.sleep(3000);
+        WebElement logoutLint = driver.findElement(By.id("logout"));
+        logoutLint.click();
+        Thread.sleep(3000);
+        Assertions.assertEquals("Login", driver.getTitle());
+    }
+
+    public void createUser(String userName, String password) {
         WebElement fistNameField = driver.findElement(By.id("inputFirstName"));
         WebElement lastNameField = driver.findElement(By.id("inputLastName"));
         WebElement usernameField = driver.findElement(By.id("inputUsername"));
@@ -67,8 +92,17 @@ class AuthE2ETests {
         fistNameField.sendKeys("Gustavo");
         lastNameField.sendKeys("Lastra");
         usernameField.sendKeys(userName);
-        passwordField.sendKeys("Test123$");
+        passwordField.sendKeys(password);
         signupButton.click();
+    }
+
+    public void login(String userName, String password) {
+        WebElement usernameField = driver.findElement(By.id("inputUsername"));
+        WebElement passwordField = driver.findElement(By.id("inputPassword"));
+        usernameField.sendKeys(userName);
+        passwordField.sendKeys(password);
+        WebElement loginButton = driver.findElement(By.tagName("button"));
+        loginButton.click();
     }
 
     public void goToSignupPage() {

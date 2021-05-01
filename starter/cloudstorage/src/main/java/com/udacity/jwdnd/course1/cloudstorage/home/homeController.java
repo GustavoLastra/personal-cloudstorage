@@ -30,16 +30,18 @@ class HomeController {
     private UserService userService;
     private CredentialService credentialService;
     private NoteService noteService;
+    private EncryptionService encryptionService;
 
-    public HomeController(FileService fileService, UserService userService, CredentialService credentialService, NoteService noteService) {
+    public HomeController(FileService fileService, UserService userService, CredentialService credentialService, NoteService noteService, EncryptionService encryptionService) {
         this.fileService = fileService;
         this.credentialService = credentialService;
         this.noteService = noteService;
         this.userService = userService;
+        this.encryptionService = encryptionService;
     }
 
     @GetMapping("/home")
-    public String homeView(Authentication authentication, Model model, EncryptionService encryptionService) {
+    public String homeView(Authentication authentication, Model model) {
         String username = authentication.getName();
         User user = userService.getUser(username);
         if (user != null) {
@@ -47,7 +49,7 @@ class HomeController {
                 model.addAttribute("fileList", this.fileService.getFileList(user.getUserId()));
                 model.addAttribute("credentialList", this.credentialService.getCredentialList(user.getUserId()));
                 model.addAttribute("noteList", this.noteService.getNoteList(user.getUserId()));
-                model.addAttribute("encryptionService", encryptionService);
+                model.addAttribute("encryptionService", this.encryptionService);
             } catch (Exception error) {
                 this.logger.error(error.getMessage());
             }
