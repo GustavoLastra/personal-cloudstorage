@@ -251,7 +251,7 @@
                         <tr th:each="credential:${credentialList}">
                             <td>
                                 <button class="btn btn-success"
-                                        th:onclick="javascript: showCredentialModal([[${credential.credentialId}]], [[${credential.url}]], [[${credential.userName}]], [[${encryptionService.decryptValue(credential.password, credential.key)}]])"
+                                        th:onclick="javascript: showCredentialModal([[${credential.credentialId}]], [[${credential.url}]], [[${credential.userName}]], [[${credential.password}]])"
                                         type="button">Edit
                                 </button>
                                 <a class="btn btn-danger"
@@ -259,7 +259,9 @@
                             </td>
                             <th scope="row" th:text="*{credential.url}">Example Credential URL</th>
                             <td th:text="*{credential.userName}">Example Credential Username</td>
-                            <td th:text="*{credential.password}">Example Credential Password</td>
+                            <td class="hidetext" th:text="*{credential.password}">Example Credential
+                                                                                  Password
+                            </td>
                         </tr>
                         </tbody>
                     </table>
@@ -337,5 +339,18 @@
         $('#credentialModal').modal('show');
     }
 </script>
+<style>
+    .hidetext {
+        -webkit-text-security: none;
+    }
+
+    .hidetext {
+        -webkit-text-security: circle;
+    }
+
+    .hidetext {
+        -webkit-text-security: square;
+    }
+</style>
 </body>
 </html>
