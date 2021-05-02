@@ -116,7 +116,7 @@
                  id="nav-notes"
                  role="tabpanel"
                  th:class="${activatedTab == 'notes' ? 'tab-pane fade show active':'tab-pane fade show'}">
-                <button class="btn btn-info float-right"
+                <button class="btn btn-info float-right" id="addNoteBtn"
                         onclick="showNoteModal()"
                         style="margin: 0.25em;"
                         type="button">
@@ -138,10 +138,11 @@
                             </th>
                         </tr>
                         </thead>
-                        <tbody>
+                        <tbody id="notesTBody">
                         <tr th:each="note:${noteList}">
                             <td>
                                 <button class="btn btn-success"
+                                        id="editNoteBtn"
                                         onclick="showNoteModal(this.getAttribute('data-noteId'),this.getAttribute('data-noteTitle'),this.getAttribute('data-noteDescription'))"
                                         th:data-note="*{note}"
                                         th:data-noteDescription="*{note.noteDescription}"
@@ -149,7 +150,7 @@
                                         th:data-noteTitle="*{note.noteTitle}"
                                         type="button">Edit
                                 </button>
-                                <a class="btn btn-danger"
+                                <a class="btn btn-danger" id="deleteNoteBtn"
                                    th:href="@{/note/delete/{noteId}(noteId=*{note.noteId})}">Delete</a>
                             </td>
                             <th scope="row"
@@ -218,6 +219,7 @@
                                         type="button">Close
                                 </button>
                                 <button class="btn btn-primary"
+                                        id="saveNoteBtn"
                                         onclick="$('#noteSubmit').click();"
                                         type="button">Save
                                                       changes

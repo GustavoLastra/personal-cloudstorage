@@ -114,13 +114,15 @@ class HomeController {
     public String uploadCredential(@ModelAttribute("credential") Credential credential, Authentication authentication, RedirectAttributes redirectAttrs) throws IOException {
         String username = authentication.getName();
         User user = userService.getUser(username);
-
         if (user != null) {
             credential.setUserId(user.getUserId());
-            boolean IsSuccessful = this.credentialService.saveCredential(credential);
+            boolean IsSuccessful = false;
+            if (credential.getCredentialId() == null)
+                IsSuccessful = this.credentialService.saveCredential(credential);
+            else
+                IsSuccessful = this.credentialService.updateCredential(credential, user.getUserId());
             addFlashAttributes(redirectAttrs, IsSuccessful, "Credentials updated", "credentials");
         }
-
         return "redirect:/home";
     }
 
