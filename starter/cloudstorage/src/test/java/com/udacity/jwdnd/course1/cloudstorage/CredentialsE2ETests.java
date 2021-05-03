@@ -1,8 +1,8 @@
 package com.udacity.jwdnd.course1.cloudstorage;
 
+import com.udacity.jwdnd.course1.cloudstorage.pages.CredentialTab;
 import com.udacity.jwdnd.course1.cloudstorage.pages.HomePage;
 import com.udacity.jwdnd.course1.cloudstorage.pages.LoginPage;
-import com.udacity.jwdnd.course1.cloudstorage.pages.NoteTab;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.junit.jupiter.api.*;
 import org.openqa.selenium.By;
@@ -17,11 +17,12 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-class NotesE2ETests {
+class CredentialsE2ETests {
 
     @LocalServerPort
     private int port;
     private WebDriver driver;
+    private CredentialTab credentialTab;
 
     @BeforeAll
     static void beforeAll() {
@@ -42,62 +43,65 @@ class NotesE2ETests {
 
     @Test
     @Order(1)
-    public void shouldLoginAndAddNote() throws InterruptedException {
-
+    public void shouldAddCredential() throws InterruptedException {
         signupOnce();
         login();
-        goToNotesTab();
-        NoteTab noteTab = new NoteTab(driver);
-        noteTab.addNote("title", "description");
-        Thread.sleep(3000);
-        Assertions.assertEquals("title", noteTab.getTableTitle());
-        Assertions.assertEquals("description", noteTab.getTableDescription());
+        goToCredentialTab();
+        CredentialTab credentialTab = new CredentialTab(driver);
+        credentialTab.addCredential("url", "username", "password");
+        Assertions.assertEquals("url", credentialTab.getTableUrl());
+        Assertions.assertEquals("username", credentialTab.getTableUsername());
+        Assertions.assertEquals("password", credentialTab.getTablePassword());
+        credentialTab.getTablePasswordElement().getAttribute("class").contains("hidetext");
     }
 
     @Test
     @Order(2)
-    public void shouldEditNote() throws InterruptedException {
+    public void shouldEditCredential() throws InterruptedException {
         login();
-        goToNotesTab();
-        NoteTab noteTab = new NoteTab(driver);
-        noteTab.editNote("Amazing title", "Amazing description");
-        Assertions.assertEquals("Amazing title", noteTab.getTableTitle());
-        Assertions.assertEquals("Amazing description", noteTab.getTableDescription());
+        goToCredentialTab();
+        CredentialTab credentialTab = new CredentialTab(driver);
+        credentialTab.editCredential("Awesome url", "Awesome username", "Awesome password");
+
+        Assertions.assertEquals("Awesome url", credentialTab.getTableUrl());
+        Assertions.assertEquals("Awesome username", credentialTab.getTableUsername());
+        Assertions.assertEquals("Awesome password", credentialTab.getTablePassword());
+        credentialTab.getTablePasswordElement().getAttribute("class").contains("hidetext");
     }
 
     @Test
     @Order(3)
-    public void shouldDeleteNote() throws InterruptedException {
+    public void shouldDeleteCredential() throws InterruptedException {
         login();
-        goToNotesTab();
-        NoteTab noteTab = new NoteTab(driver);
-        noteTab.deleteNote();
-
+        goToCredentialTab();
+        CredentialTab credentialTab = new CredentialTab(driver);
+        credentialTab.deleteCredential();
         assertThrows(NoSuchElementException.class, () -> {
-            WebElement table = driver.findElement(By.id("notesTBody"));
+            WebElement table = driver.findElement(By.id("credentialsTBody"));
             table.findElement(By.tagName("tr"));
         });
     }
 
-    private void goToNotesTab() throws InterruptedException {
+
+    private void goToCredentialTab() throws InterruptedException {
         driver.get("http://localhost:" + this.port + "/home");
         Thread.sleep(3000);
         HomePage homePage = new HomePage(driver);
-        homePage.goToNotesTab();
+        homePage.goToCredentialsTab();
         Thread.sleep(3000);
     }
 
     private void login() throws InterruptedException {
         LoginPage loginPage = new LoginPage(driver);
         driver.get("http://localhost:" + this.port + "/login");
-        loginPage.login("NoteFirst", "Test123$");
+        loginPage.login("CredentialFirst", "Test123$");
         Thread.sleep(3000);
     }
 
     private void signupOnce() throws InterruptedException {
         driver.get("http://localhost:" + this.port + "/signup");
         SignupPage signupPage = new SignupPage(driver);
-        signupPage.signup("NoteFirst", "authL", "NoteFirst", "Test123$");
+        signupPage.signup("CredentialFirst", "authL", "CredentialFirst", "Test123$");
         Thread.sleep(3000);
     }
 }
