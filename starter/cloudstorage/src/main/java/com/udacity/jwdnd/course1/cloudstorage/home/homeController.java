@@ -90,10 +90,13 @@ class HomeController {
         String username = authentication.getName();
         User user = userService.getUser(username);
         if (user != null) {
-            boolean IsSuccessful = this.fileService.saveFile(file, user.getUserId());
-            addFlashAttributes(redirectAttrs, IsSuccessful, "File uploaded", "files");
+            if (!file.getOriginalFilename().equals("")) {
+                boolean IsSuccessful = this.fileService.saveFile(file, user.getUserId());
+                addFlashAttributes(redirectAttrs, IsSuccessful, "File uploaded", "files");
+            } else {
+                addFlashAttributes(redirectAttrs, false, "", "files");
+            }
         }
-
         return "redirect:/home";
     }
 

@@ -255,7 +255,7 @@
                         <tr th:each="credential:${credentialList}">
                             <td>
                                 <button class="btn btn-success" id="editCredentialBtn"
-                                        th:onclick="javascript: showCredentialModal([[${credential.credentialId}]], [[${credential.url}]], [[${credential.userName}]], [[${credential.password}]])"
+                                        th:onclick="javascript: showCredentialModal([[${credential.credentialId}]], [[${credential.url}]], [[${credential.userName}]], [[${encryptionService.decryptValue(credential.password, credential.key)}]])"
                                         type="button">Edit
                                 </button>
                                 <a class="btn btn-danger" id="deleteCredentialBtn"
@@ -265,8 +265,8 @@
                             <td class="table-username" th:text=" *{credential.userName}
                             ">Example Credential Username
                             </td>
-                            <td class="hidetext" th:text="*{credential.password}">Example Credential
-                                                                                  Password
+                            <td class="table-password" th:text="*{credential.password}">Example Credential
+                                                                                        Password
                             </td>
                         </tr>
                         </tbody>

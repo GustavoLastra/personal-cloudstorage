@@ -37,12 +37,6 @@ public class CredentialService {
 
     public List<Credential> getCredentialList(Integer userId) {
         List<Credential> credentialList = credentialMapper.getCredentialList(userId);
-        if (!credentialList.isEmpty()) {
-            for (Credential credential : credentialList) {
-                credential.setPassword(encryptionService.decryptValue(credential.getPassword(), credential.getKey()));
-            }
-        }
-
         return credentialList;
     }
 

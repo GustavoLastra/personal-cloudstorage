@@ -30,7 +30,7 @@ class CredentialsE2ETests {
     }
 
     @BeforeEach
-    public void beforeEach() throws InterruptedException {
+    public void beforeEach() {
         this.driver = new ChromeDriver();
     }
 
@@ -51,8 +51,6 @@ class CredentialsE2ETests {
         credentialTab.addCredential("url", "username", "password");
         Assertions.assertEquals("url", credentialTab.getTableUrl());
         Assertions.assertEquals("username", credentialTab.getTableUsername());
-        Assertions.assertEquals("password", credentialTab.getTablePassword());
-        credentialTab.getTablePasswordElement().getAttribute("class").contains("hidetext");
     }
 
     @Test
@@ -65,8 +63,6 @@ class CredentialsE2ETests {
 
         Assertions.assertEquals("Awesome url", credentialTab.getTableUrl());
         Assertions.assertEquals("Awesome username", credentialTab.getTableUsername());
-        Assertions.assertEquals("Awesome password", credentialTab.getTablePassword());
-        credentialTab.getTablePasswordElement().getAttribute("class").contains("hidetext");
     }
 
     @Test

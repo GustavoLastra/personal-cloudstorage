@@ -34,7 +34,7 @@ public class CredentialTab {
     @FindBy(className = "table-username")
     private WebElement tableUsername;
 
-    @FindBy(className = "hidetext")
+    @FindBy(className = "table-password")
     private WebElement tablePassword;
 
     public CredentialTab(WebDriver driver) {
